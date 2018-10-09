@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using System.IO;
 
 
-//Uppgift1: Skriv en ny klass Enemy, som ärver Gameobject och som vandrar runt slumpmässigt på spelplanen. Skapa en new Enemy och lägg till i GameObjects-listan.
-//Uppgift2: Skriv en ny klass Player, som ärver Gameobject och som kan styras med tangenterna WASD. Skapa en new Player och lägg till i GameObjects-listan.
 namespace GridGame
 {
     
@@ -18,6 +16,7 @@ namespace GridGame
     
         static void Main(string[] args)
         {
+<<<<<<< HEAD
 
             
             
@@ -27,15 +26,20 @@ namespace GridGame
 
            // rndLevel.Draw(10, 10);
 
+=======
+            Game myGame = new Game(22, 8);
+>>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
             while (true)
             {
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
+<<<<<<< HEAD
                 level.Start(0,0);
                 Console.ReadKey();
+=======
+                //Console.ReadKey();
+>>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
             }
-
-
         }
     }
 
@@ -48,6 +52,7 @@ namespace GridGame
 
         public Game(int xSize, int ySize)
         {
+<<<<<<< HEAD
 
             //levels.Add(new RandomTestLevel(10, 10));
 
@@ -61,6 +66,19 @@ namespace GridGame
             //        }
             //    }
             //}
+=======
+            for (int i = 0; i < ySize + 2; i++)
+            {
+                for (int j = 0; j < xSize + 2; j++)
+                {
+                    if (j == 0 || i == 0 || i == ySize + 1 || j == xSize + 1)
+                    {
+                        GameObjects.Add(new Wall(j, i));
+                    }
+                }
+            }
+            GameObjects.Add(new Player(5, 5));
+>>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
 
         }
 
@@ -237,6 +255,7 @@ namespace GridGame
         }
     }
 
+<<<<<<< HEAD
     abstract class LevelBase
     {
 
@@ -319,5 +338,66 @@ namespace GridGame
 
 
 
+=======
+    class Player : GameObject
+    {
+        int lastX;
+        int lastY;
+
+        public Player(int xPos, int yPos)
+        {
+            XPosition = xPos;
+            YPosition = yPos;
+        }
+
+        public override void Draw(int xBoxSize, int yBoxSize)
+        {
+            int curX = XPosition * xBoxSize;
+            int curY = YPosition * yBoxSize;
+            Console.SetCursorPosition(curX, curY);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 1);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 2);
+            Console.Write("█████");
+
+            lastY = curY;
+            lastX = curX;
+        }
+
+        public override void Update()
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();   
+
+            Erase();
+
+            if (keyInfo.Key == ConsoleKey.W)
+            {
+                YPosition--;
+            }
+            else if (keyInfo.Key == ConsoleKey.S)
+            {
+                YPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.D)
+            {
+                XPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.A)
+            {
+                XPosition--;
+            }
+        }
+
+        public void Erase()
+        {
+            Console.SetCursorPosition(lastX, lastY);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 1);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 2);
+            Console.Write("     ");
+        }
+>>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
     }
 }
