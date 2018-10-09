@@ -17,10 +17,8 @@ namespace GridGame
             {
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
-                Console.ReadKey();
+                //Console.ReadKey();
             }
-
-
         }
     }
 
@@ -41,6 +39,7 @@ namespace GridGame
                     }
                 }
             }
+            GameObjects.Add(new Player(5, 5));
 
         }
 
@@ -97,4 +96,64 @@ namespace GridGame
         }
     }
 
+    class Player : GameObject
+    {
+        int lastX;
+        int lastY;
+
+        public Player(int xPos, int yPos)
+        {
+            XPosition = xPos;
+            YPosition = yPos;
+        }
+
+        public override void Draw(int xBoxSize, int yBoxSize)
+        {
+            int curX = XPosition * xBoxSize;
+            int curY = YPosition * yBoxSize;
+            Console.SetCursorPosition(curX, curY);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 1);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 2);
+            Console.Write("█████");
+
+            lastY = curY;
+            lastX = curX;
+        }
+
+        public override void Update()
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();   
+
+            Erase();
+
+            if (keyInfo.Key == ConsoleKey.W)
+            {
+                YPosition--;
+            }
+            else if (keyInfo.Key == ConsoleKey.S)
+            {
+                YPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.D)
+            {
+                XPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.A)
+            {
+                XPosition--;
+            }
+        }
+
+        public void Erase()
+        {
+            Console.SetCursorPosition(lastX, lastY);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 1);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 2);
+            Console.Write("     ");
+        }
+    }
 }
