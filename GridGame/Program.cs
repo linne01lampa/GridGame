@@ -9,64 +9,34 @@ using System.IO;
 
 namespace GridGame
 {
-    
+
     class Program
     {
 
-    
+
         static void Main(string[] args)
         {
-<<<<<<< HEAD
-
-            
-            
             Game myGame = new Game(15, 6);
             Level level = new Level();
-            //RandomTestLevel rndLevel = new RandomTestLevel(10, 10);
 
-           // rndLevel.Draw(10, 10);
-
-=======
-            Game myGame = new Game(22, 8);
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
             while (true)
             {
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
-<<<<<<< HEAD
-                level.Start(0,0);
+                level.Start(0, 0);
                 Console.ReadKey();
-=======
-                //Console.ReadKey();
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
             }
         }
     }
 
     class Game
     {
-
         List<GameObject> GameObjects = new List<GameObject>();
         List<LevelBase> levels = new List<LevelBase>();
-        
+
 
         public Game(int xSize, int ySize)
         {
-<<<<<<< HEAD
-
-            //levels.Add(new RandomTestLevel(10, 10));
-
-            //for (int i = 0; i < ySize + 2; i++)
-            //{
-            //    for (int j = 0; j < xSize + 2; j++)
-            //    {
-            //        if (j == 0 || i == 0 || i == ySize + 1 || j == xSize + 1)
-            //        {
-            //            GameObjects.Add(new Wall(j, i));
-            //        }
-            //    }
-            //}
-=======
             for (int i = 0; i < ySize + 2; i++)
             {
                 for (int j = 0; j < xSize + 2; j++)
@@ -78,7 +48,6 @@ namespace GridGame
                 }
             }
             GameObjects.Add(new Player(5, 5));
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
 
         }
 
@@ -89,14 +58,14 @@ namespace GridGame
                 gameObject.Draw(5, 3);
             }
 
-            foreach(LevelBase level in levels)
+            foreach (LevelBase level in levels)
             {
-                
+
             }
 
-            
 
-            
+
+
 
         }
 
@@ -143,8 +112,67 @@ namespace GridGame
 
         }
     }
+    class Player : GameObject
+    {
+        int lastX;
+        int lastY;
 
-    
+        public Player(int xPos, int yPos)
+        {
+            XPosition = xPos;
+            YPosition = yPos;
+        }
+
+        public override void Draw(int xBoxSize, int yBoxSize)
+        {
+            int curX = XPosition * xBoxSize;
+            int curY = YPosition * yBoxSize;
+            Console.SetCursorPosition(curX, curY);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 1);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 2);
+            Console.Write("█████");
+
+            lastY = curY;
+            lastX = curX;
+        }
+
+        public override void Update()
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+            Erase();
+
+            if (keyInfo.Key == ConsoleKey.W)
+            {
+                YPosition--;
+            }
+            else if (keyInfo.Key == ConsoleKey.S)
+            {
+                YPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.D)
+            {
+                XPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.A)
+            {
+                XPosition--;
+            }
+        }
+
+        public void Erase()
+        {
+            Console.SetCursorPosition(lastX, lastY);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 1);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 2);
+            Console.Write("     ");
+        }
+    }
+
 
     class Level
     {
@@ -197,9 +225,9 @@ namespace GridGame
                     curX = startX;
                     curY += offset;
                 }
-                if(curChar.ToString() == "3")
+                if (curChar.ToString() == "3")
                 {
-                    if(rndNum == 1)
+                    if (rndNum == 1)
                     {
                         write = true;
                     }
@@ -215,14 +243,14 @@ namespace GridGame
                 blocks.Add(new Block(curX, curY, write));
                 blocks[i].Draw(curX, curY);
             }
-        }       
+        }
     }
 
     class Block : GameObject
     {
         int xPosition;
         int yPosition;
-        
+
         bool write;
 
         public Block(int xPos, int yPos, bool ifWrite)
@@ -240,7 +268,7 @@ namespace GridGame
 
         public override void Draw(int x, int y)
         {
-            
+
             if (write)
             {
                 Console.SetCursorPosition(x, y);
@@ -250,12 +278,11 @@ namespace GridGame
             }
             else
             {
-                Console.Write("    "); 
-            }           
+                Console.Write("    ");
+            }
         }
     }
 
-<<<<<<< HEAD
     abstract class LevelBase
     {
 
@@ -333,71 +360,5 @@ namespace GridGame
             Console.SetCursorPosition(x, y + 1);
             Console.Write("████");
         }
-
-        
-
-
-
-=======
-    class Player : GameObject
-    {
-        int lastX;
-        int lastY;
-
-        public Player(int xPos, int yPos)
-        {
-            XPosition = xPos;
-            YPosition = yPos;
-        }
-
-        public override void Draw(int xBoxSize, int yBoxSize)
-        {
-            int curX = XPosition * xBoxSize;
-            int curY = YPosition * yBoxSize;
-            Console.SetCursorPosition(curX, curY);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 1);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 2);
-            Console.Write("█████");
-
-            lastY = curY;
-            lastX = curX;
-        }
-
-        public override void Update()
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey();   
-
-            Erase();
-
-            if (keyInfo.Key == ConsoleKey.W)
-            {
-                YPosition--;
-            }
-            else if (keyInfo.Key == ConsoleKey.S)
-            {
-                YPosition++;
-            }
-            else if (keyInfo.Key == ConsoleKey.D)
-            {
-                XPosition++;
-            }
-            else if (keyInfo.Key == ConsoleKey.A)
-            {
-                XPosition--;
-            }
-        }
-
-        public void Erase()
-        {
-            Console.SetCursorPosition(lastX, lastY);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 1);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 2);
-            Console.Write("     ");
-        }
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
     }
 }
