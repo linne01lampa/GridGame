@@ -16,29 +16,24 @@ namespace GridGame
     
         static void Main(string[] args)
         {
-<<<<<<< HEAD
 
             
             
-            Game myGame = new Game(15, 6);
-            Level level = new Level();
+            //Game myGame = new Game(15, 6);
+            //Level level = new Level();
             //RandomTestLevel rndLevel = new RandomTestLevel(10, 10);
 
            // rndLevel.Draw(10, 10);
 
-=======
+
             Game myGame = new Game(22, 8);
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
             while (true)
             {
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
-<<<<<<< HEAD
-                level.Start(0,0);
-                Console.ReadKey();
-=======
+                //level.Start(0,0);
                 //Console.ReadKey();
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
+                //Console.ReadKey();
             }
         }
     }
@@ -48,11 +43,12 @@ namespace GridGame
 
         List<GameObject> GameObjects = new List<GameObject>();
         List<LevelBase> levels = new List<LevelBase>();
+        List<Scene> scenes = new List<Scene>();
         
 
         public Game(int xSize, int ySize)
         {
-<<<<<<< HEAD
+ 
 
             //levels.Add(new RandomTestLevel(10, 10));
 
@@ -66,7 +62,7 @@ namespace GridGame
             //        }
             //    }
             //}
-=======
+
             for (int i = 0; i < ySize + 2; i++)
             {
                 for (int j = 0; j < xSize + 2; j++)
@@ -78,8 +74,6 @@ namespace GridGame
                 }
             }
             GameObjects.Add(new Player(5, 5));
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
-
         }
 
         public void DrawBoard()
@@ -144,14 +138,118 @@ namespace GridGame
         }
     }
 
-    
+    class Player : GameObject
+    {
+        int lastX;
+        int lastY;
+
+        public Player(int xPos, int yPos)
+        {
+            XPosition = xPos;
+            YPosition = yPos;
+        }
+
+        public override void Draw(int xBoxSize, int yBoxSize)
+        {
+            int curX = XPosition * xBoxSize;
+            int curY = YPosition * yBoxSize;
+            Console.SetCursorPosition(curX, curY);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 1);
+            Console.Write("█████");
+            Console.SetCursorPosition(curX, curY + 2);
+            Console.Write("█████");
+
+            lastY = curY;
+            lastX = curX;
+        }
+
+        public override void Update()
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+            Erase();
+
+            if (keyInfo.Key == ConsoleKey.W)
+            {
+                YPosition--;
+            }
+            else if (keyInfo.Key == ConsoleKey.S)
+            {
+                YPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.D)
+            {
+                XPosition++;
+            }
+            else if (keyInfo.Key == ConsoleKey.A)
+            {
+                XPosition--;
+            }
+        }
+
+        public void Erase()
+        {
+            Console.SetCursorPosition(lastX, lastY);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 1);
+            Console.Write("     ");
+            Console.SetCursorPosition(lastX, lastY + 2);
+            Console.Write("     ");
+        }
+    }
+
+    abstract class Scene
+    {
+        public abstract void Start();
+    }
+
+    class MainMenu : Scene
+    {
+        public override void Start()
+        {
+            Console.WriteLine("Main Menu");
+            Console.WriteLine("1: Start game");
+            Console.WriteLine("2: Load game");
+            Console.WriteLine("3: Highscore");
+            Console.WriteLine("4: Exit game");
+
+            bool rightAns = false;
+
+            while (!rightAns)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+                if (keyInfo.Key == ConsoleKey.D1)
+                {
+                    rightAns = true;
+                }
+                else if (keyInfo.Key == ConsoleKey.D2)
+                {
+                    rightAns = true;
+                }
+                else if (keyInfo.Key == ConsoleKey.D3)
+                {
+                    rightAns = true;
+                }
+                else if (keyInfo.Key == ConsoleKey.D4)
+                {
+                    rightAns = true;
+                }
+                else
+                {
+                    rightAns = false;
+                }
+            }
+        }
+    }
 
     class Level
     {
 
         Random rnd;
 
-        string ranLevel = File.ReadAllText(@"C:\Users\patrik.fridh\Documents\Github\GridGame\Test.txt");
+        //string ranLevel = File.ReadAllText(@"C:\Users\patrik.fridh\Documents\Github\GridGame\Test.txt");
         char[] lines;
         public Level()
         {
@@ -173,7 +271,7 @@ namespace GridGame
 
             List<Block> blocks = new List<Block>();
 
-            lines = ranLevel.ToCharArray(0, ranLevel.Length);
+            //lines = ranLevel.ToCharArray(0, ranLevel.Length);
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -255,7 +353,6 @@ namespace GridGame
         }
     }
 
-<<<<<<< HEAD
     abstract class LevelBase
     {
 
@@ -333,71 +430,5 @@ namespace GridGame
             Console.SetCursorPosition(x, y + 1);
             Console.Write("████");
         }
-
-        
-
-
-
-=======
-    class Player : GameObject
-    {
-        int lastX;
-        int lastY;
-
-        public Player(int xPos, int yPos)
-        {
-            XPosition = xPos;
-            YPosition = yPos;
-        }
-
-        public override void Draw(int xBoxSize, int yBoxSize)
-        {
-            int curX = XPosition * xBoxSize;
-            int curY = YPosition * yBoxSize;
-            Console.SetCursorPosition(curX, curY);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 1);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 2);
-            Console.Write("█████");
-
-            lastY = curY;
-            lastX = curX;
-        }
-
-        public override void Update()
-        {
-            ConsoleKeyInfo keyInfo = Console.ReadKey();   
-
-            Erase();
-
-            if (keyInfo.Key == ConsoleKey.W)
-            {
-                YPosition--;
-            }
-            else if (keyInfo.Key == ConsoleKey.S)
-            {
-                YPosition++;
-            }
-            else if (keyInfo.Key == ConsoleKey.D)
-            {
-                XPosition++;
-            }
-            else if (keyInfo.Key == ConsoleKey.A)
-            {
-                XPosition--;
-            }
-        }
-
-        public void Erase()
-        {
-            Console.SetCursorPosition(lastX, lastY);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 1);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 2);
-            Console.Write("     ");
-        }
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
     }
 }
