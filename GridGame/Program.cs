@@ -12,33 +12,35 @@ namespace GridGame
     
     class Program
     {
-
+        
     
         static void Main(string[] args)
         {
-<<<<<<< HEAD
+            int trys = 7;
+            
 
-            
-            
             Game myGame = new Game(15, 6);
             Level level = new Level();
-            //RandomTestLevel rndLevel = new RandomTestLevel(10, 10);
-
-           // rndLevel.Draw(10, 10);
-
-=======
-            Game myGame = new Game(22, 8);
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
+            
             while (true)
             {
+                if(trys == 7)
+                {
+                    level.Start(0, 0);
+                    trys = 0;
+                }
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
-<<<<<<< HEAD
-                level.Start(0,0);
                 Console.ReadKey();
-=======
-                //Console.ReadKey();
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
+                trys++;
+            }
+
+            
+            
+
+            while (true)
+            {
+                
             }
         }
     }
@@ -52,21 +54,7 @@ namespace GridGame
 
         public Game(int xSize, int ySize)
         {
-<<<<<<< HEAD
 
-            //levels.Add(new RandomTestLevel(10, 10));
-
-            //for (int i = 0; i < ySize + 2; i++)
-            //{
-            //    for (int j = 0; j < xSize + 2; j++)
-            //    {
-            //        if (j == 0 || i == 0 || i == ySize + 1 || j == xSize + 1)
-            //        {
-            //            GameObjects.Add(new Wall(j, i));
-            //        }
-            //    }
-            //}
-=======
             for (int i = 0; i < ySize + 2; i++)
             {
                 for (int j = 0; j < xSize + 2; j++)
@@ -77,8 +65,6 @@ namespace GridGame
                     }
                 }
             }
-            GameObjects.Add(new Player(5, 5));
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
 
         }
 
@@ -148,10 +134,13 @@ namespace GridGame
 
     class Level
     {
+        public string path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory.ToString(), "Test.txt");
 
         Random rnd;
 
-        string ranLevel = File.ReadAllText(@"C:\Users\patrik.fridh\Documents\Github\GridGame\Test.txt");
+        string ranLevel = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "Test.txt"));
+        
+
         char[] lines;
         public Level()
         {
@@ -160,8 +149,12 @@ namespace GridGame
 
         public void Start(int startX, int startY)
         {
+
+            Console.WriteLine(ranLevel);
             int curY = startX;
             int curX = startY;
+
+            
 
             rnd = new Random();
 
@@ -171,13 +164,17 @@ namespace GridGame
 
             bool write = false;
 
+            bool vertical = false;
+
             List<Block> blocks = new List<Block>();
 
             lines = ranLevel.ToCharArray(0, ranLevel.Length);
 
             for (int i = 0; i < lines.Length; i++)
             {
-                rndNum = rnd.Next(3);
+                rndNum = rnd.Next(2);
+
+                
 
                 char curChar = lines[i];
 
@@ -189,11 +186,13 @@ namespace GridGame
                 if (curChar.ToString() == "0")
                 {
                     write = false;
+                    vertical = false;
                     curX += offset;
                 }
                 if (curChar.ToString() == "2")
                 {
                     write = false;
+                    vertical = false;
                     curX = startX;
                     curY += offset;
                 }
@@ -208,14 +207,20 @@ namespace GridGame
                         write = false;
                     }
 
+                    
+                    vertical = true;
                     curX += offset;
                 }
 
 
-                blocks.Add(new Block(curX, curY, write));
+                blocks.Add(new Block(curX, curY, write, vertical));
                 blocks[i].Draw(curX, curY);
             }
-        }       
+
+            
+
+        }
+
     }
 
     class Block : GameObject
@@ -225,11 +230,14 @@ namespace GridGame
         
         bool write;
 
-        public Block(int xPos, int yPos, bool ifWrite)
+        bool vert;
+
+        public Block(int xPos, int yPos, bool ifWrite, bool vertical)
         {
             xPosition = xPos;
             yPosition = yPos;
             write = ifWrite;
+            vert = vertical;
         }
 
 
@@ -243,10 +251,29 @@ namespace GridGame
             
             if (write)
             {
-                Console.SetCursorPosition(x, y);
-                Console.Write("█");
+                if (vert)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write("█");
+                    //Console.SetCursorPosition(x, y + 1);
+                    //Console.Write("██");
+                    
+                }
+                else if (!vert)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write("█");
+                }
+                
+
+
+                
                 //Console.SetCursorPosition(x, y + 1);
                 //Console.Write("█");
+                //Console.OutputEncoding = Encoding.GetEncoding(866);
+                //Console.WriteLine("┌─┐");
+                //Console.WriteLine("│1│");
+                //Console.WriteLine("└─┘");
             }
             else
             {
@@ -255,7 +282,6 @@ namespace GridGame
         }
     }
 
-<<<<<<< HEAD
     abstract class LevelBase
     {
 
@@ -334,11 +360,6 @@ namespace GridGame
             Console.Write("████");
         }
 
-        
-
-
-
-=======
     class Player : GameObject
     {
         int lastX;
@@ -398,6 +419,6 @@ namespace GridGame
             Console.SetCursorPosition(lastX, lastY + 2);
             Console.Write("     ");
         }
->>>>>>> ca53a5f318d548352364e215eff8e2bcda19f70c
     }
+        }
 }

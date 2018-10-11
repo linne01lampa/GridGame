@@ -1,0 +1,13 @@
+﻿
+
+
+
+
+
+/////
+Level Generator:
+1. Styrs av eller vi text fil  eller eventuelt hårdkodat in.
+2. Dela textfilen till chars och for loopar igen var och en och ser vilken siffra de har.
+3. 1 == ett permanent block. 2 == ny rad. 0 == inget block. 3 == 50% shans att det blir ett block..
+
+/////
