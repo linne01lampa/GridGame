@@ -4,3 +4,4 @@ C:\Users\linus.bensryd\Documents\GitHub\GridGame\GridGame\bin\Debug\GridGame.pdb
 C:\Users\linus.bensryd\Documents\GitHub\GridGame\GridGame\obj\Debug\GridGame.csproj.CoreCompileInputs.cache
 C:\Users\linus.bensryd\Documents\GitHub\GridGame\GridGame\obj\Debug\GridGame.exe
 C:\Users\linus.bensryd\Documents\GitHub\GridGame\GridGame\obj\Debug\GridGame.pdb
+C:\Users\linus.bensryd\Documents\GitHub\GridGame\GridGame\obj\Debug\GridGame.csprojResolveAssemblyReference.cache
