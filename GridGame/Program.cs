@@ -9,48 +9,36 @@ using System.IO;
 
 namespace GridGame
 {
-    
+
     class Program
     {
-        
-    
+
+
         static void Main(string[] args)
         {
-            int trys = 7;
             
+
 
             Game myGame = new Game(15, 6);
             Level level = new Level();
-            
+
             while (true)
             {
-                if(trys == 7)
-                {
-                    level.Start(0, 0);
-                    trys = 0;
-                }
                 myGame.UpdateBoard();
                 myGame.DrawBoard();
-                Console.ReadKey();
-                trys++;
             }
 
-            
-            
-
-            while (true)
-            {
-                
-            }
         }
     }
 
     class Game
     {
+        int trys = 7;
 
         List<GameObject> GameObjects = new List<GameObject>();
-        List<LevelBase> levels = new List<LevelBase>();
-        
+
+        List<LevelBase> Levels = new List<LevelBase>();
+
 
         public Game(int xSize, int ySize)
         {
@@ -65,24 +53,31 @@ namespace GridGame
                     }
                 }
             }
-
+            GameObjects.Add(new Player(1, 1));
+            Levels.Add(new Level());
         }
 
         public void DrawBoard()
         {
+            ConsoleColor foreGrounColor = ConsoleColor.Blue;
+
+
+            if (trys == 7)
+            {
+                foreach (LevelBase i in Levels)
+                {
+                    i.Start(0, 0);
+                }
+                trys = 0;
+            }
             foreach (GameObject gameObject in GameObjects)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 gameObject.Draw(5, 3);
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
-            foreach(LevelBase level in levels)
-            {
-                
-            }
-
-            
-
-            
+            trys++;
 
         }
 
@@ -130,236 +125,6 @@ namespace GridGame
         }
     }
 
-    
-
-    class Level
-    {
-        public string path = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory.ToString(), "Test.txt");
-
-        Random rnd;
-
-        string ranLevel = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "Test.txt"));
-        
-
-        char[] lines;
-        public Level()
-        {
-
-        }
-
-        public void Start(int startX, int startY)
-        {
-
-            Console.WriteLine(ranLevel);
-            int curY = startX;
-            int curX = startY;
-
-            
-
-            rnd = new Random();
-
-            int rndNum = 0;
-
-            int offset = 1;
-
-            bool write = false;
-
-            bool vertical = false;
-
-            List<Block> blocks = new List<Block>();
-
-            lines = ranLevel.ToCharArray(0, ranLevel.Length);
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                rndNum = rnd.Next(2);
-
-                
-
-                char curChar = lines[i];
-
-                if (curChar.ToString() == "1")
-                {
-                    write = true;
-                    curX += offset;
-                }
-                if (curChar.ToString() == "0")
-                {
-                    write = false;
-                    vertical = false;
-                    curX += offset;
-                }
-                if (curChar.ToString() == "2")
-                {
-                    write = false;
-                    vertical = false;
-                    curX = startX;
-                    curY += offset;
-                }
-                if(curChar.ToString() == "3")
-                {
-                    if(rndNum == 1)
-                    {
-                        write = true;
-                    }
-                    else
-                    {
-                        write = false;
-                    }
-
-                    
-                    vertical = true;
-                    curX += offset;
-                }
-
-
-                blocks.Add(new Block(curX, curY, write, vertical));
-                blocks[i].Draw(curX, curY);
-            }
-
-            
-
-        }
-
-    }
-
-    class Block : GameObject
-    {
-        int xPosition;
-        int yPosition;
-        
-        bool write;
-
-        bool vert;
-
-        public Block(int xPos, int yPos, bool ifWrite, bool vertical)
-        {
-            xPosition = xPos;
-            yPosition = yPos;
-            write = ifWrite;
-            vert = vertical;
-        }
-
-
-        public override void Update()
-        {
-
-        }
-
-        public override void Draw(int x, int y)
-        {
-            
-            if (write)
-            {
-                if (vert)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write("█");
-                    //Console.SetCursorPosition(x, y + 1);
-                    //Console.Write("██");
-                    
-                }
-                else if (!vert)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write("█");
-                }
-                
-
-
-                
-                //Console.SetCursorPosition(x, y + 1);
-                //Console.Write("█");
-                //Console.OutputEncoding = Encoding.GetEncoding(866);
-                //Console.WriteLine("┌─┐");
-                //Console.WriteLine("│1│");
-                //Console.WriteLine("└─┘");
-            }
-            else
-            {
-                Console.Write("    "); 
-            }           
-        }
-    }
-
-    abstract class LevelBase
-    {
-
-        public abstract void Draw(int x, int y);
-
-    }
-
-    class RandomTestLevel : LevelBase
-    {
-        int levelXSize;
-        int levelYSize;
-
-        bool RIGHT = true;
-        bool LEFT = true;
-        bool UP = true;
-        bool Down = true;
-
-        Random rnd = new Random();
-
-        int curX;
-        int curY;
-
-        bool done = false;
-
-        int moves = 0;
-
-        public RandomTestLevel(int xSize, int ySize)
-        {
-            levelXSize = xSize;
-            levelYSize = ySize;
-
-            while (!done)
-            {
-                int dir = rnd.Next(4);
-
-                //Console.WriteLine(dir);
-
-                if (dir == 0 && curX < 100)
-                {
-                    curX++;
-                }
-                if (dir == 1 && curX > 0 && curX < 100)
-                {
-                    curX--;
-                }
-                if (dir == 2 && curY < 100)
-                {
-                    curY++;
-                }
-                if (dir == 3 && curY > 0 && curX < 100)
-                {
-                    curY--;
-                }
-                else
-                {
-                    curX++;
-                }
-
-                Draw(curX, curY);
-
-                moves++;
-
-                if (moves == 100)
-                {
-                    done = true;
-                }
-            }
-
-        }
-
-        public override void Draw(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
-            Console.Write("████");
-            Console.SetCursorPosition(x, y + 1);
-            Console.Write("████");
-        }
-
     class Player : GameObject
     {
         int lastX;
@@ -373,14 +138,10 @@ namespace GridGame
 
         public override void Draw(int xBoxSize, int yBoxSize)
         {
-            int curX = XPosition * xBoxSize;
-            int curY = YPosition * yBoxSize;
+            int curX = XPosition;
+            int curY = YPosition;
             Console.SetCursorPosition(curX, curY);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 1);
-            Console.Write("█████");
-            Console.SetCursorPosition(curX, curY + 2);
-            Console.Write("█████");
+            Console.Write("█");
 
             lastY = curY;
             lastX = curX;
@@ -388,7 +149,8 @@ namespace GridGame
 
         public override void Update()
         {
-            ConsoleKeyInfo keyInfo = Console.ReadKey();   
+            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+            Console.CursorVisible = false;
 
             Erase();
 
@@ -413,12 +175,139 @@ namespace GridGame
         public void Erase()
         {
             Console.SetCursorPosition(lastX, lastY);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 1);
-            Console.Write("     ");
-            Console.SetCursorPosition(lastX, lastY + 2);
-            Console.Write("     ");
+            Console.Write(" ");
         }
     }
+
+    abstract class LevelBase
+    {
+        public string fileText;
+
+        public abstract void Start(int x, int y);
+    }
+
+    class Level : LevelBase
+    {
+        string ranLevel = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "LevelOne.txt"));
+        char[] lines;
+
+        Random rnd;
+
+        public Level()
+        {
+
         }
+
+        
+
+        public override void Start(int x, int y)
+        {
+            int curY = x;
+            int curX = y;
+            int rndNum = 0;
+            int offset = 1;
+
+            bool write = false;
+            bool vertical = false;
+
+            rnd = new Random();
+
+            List<Block> blocks = new List<Block>();
+
+            lines = ranLevel.ToCharArray(0, ranLevel.Length);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                rndNum = rnd.Next(2);
+
+                char curChar = lines[i];
+
+                if (curChar.ToString() == "1")
+                {
+                    write = true;
+                    curX += offset;
+                }
+                if (curChar.ToString() == "0")
+                {
+                    write = false;
+                    vertical = false;
+                    curX += offset;
+                }
+                if (curChar.ToString() == "2")
+                {
+                    write = false;
+                    vertical = false;
+                    curX = x;
+                    curY += offset;
+                }
+                if (curChar.ToString() == "3")
+                {
+                    if (rndNum == 1)
+                    {
+                        write = true;
+                    }
+                    else
+                    {
+                        write = false;
+                    }
+
+                    vertical = true;
+                    curX += offset;
+                }
+
+                blocks.Add(new Block(curX, curY, write, vertical));
+                blocks[i].Draw(curX, curY);
+            }
+        }
+    }
+
+    class Block : GameObject
+    {
+        int xPosition;
+        int yPosition;
+
+        bool write;
+
+        bool vert;
+
+        public Block(int xPos, int yPos, bool ifWrite, bool vertical)
+        {
+            xPosition = xPos;
+            yPosition = yPos;
+            write = ifWrite;
+            vert = vertical;
+        }
+
+
+        public override void Update()
+        {
+
+        }
+
+        public override void Draw(int x, int y)
+        {
+
+            if (write)
+            {
+                if (vert)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write("█");
+                    //Console.SetCursorPosition(x, y + 1);
+                    //Console.Write("██");
+
+                }
+                else if (!vert)
+                {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write("█");
+                }
+            }
+            else
+            {
+                Console.Write(" ");
+            }
+        }
+    }
+
 }
